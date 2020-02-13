@@ -8,7 +8,7 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 const INGREDIENT_PRICES = {
   salad: 0.5,
   cheese: 0.4,
-  meat: 1.3,
+  meat: 1.5,
   bacon: 0.4
 };
 
@@ -109,6 +109,7 @@ class BurgerBuilder extends Component {
           <OrderSummary
             ingredients={this.state.ingredients}
             purchaseCanceled={this.purchaseCancelHandler}
+            price={this.state.totalPrice}
             purchaseContinue={this.purchaseContinueHandler}
           />
         </Modal>
