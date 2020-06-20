@@ -2,9 +2,10 @@ import React from "react";
 import classes from "./Burger.css";
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 
-const burger = props => {
+const burger = (props) => {
+  console.log(props);
   let transformIngredients = Object.keys(props.ingredients)
-    .map(igItem => {
+    .map((igItem) => {
       return [...Array(props.ingredients[igItem])].map((_, i) => {
         return <BurgerIngredient key={igItem + i} type={igItem} />;
       });
@@ -14,7 +15,7 @@ const burger = props => {
     }, []);
 
   if (transformIngredients.length === 0) {
-    transformIngredients = <p>Please start adding ingredients!</p>
+    transformIngredients = <p>Please start adding ingredients!</p>;
   }
 
   return (
