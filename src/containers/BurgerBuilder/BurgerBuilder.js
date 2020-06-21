@@ -1,37 +1,21 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import Aux from "../../hoc/Aux/Aux"
+import axios from "../../axios-order"
 import Burger from "../../components/Burger/Burger"
 import BuildControls from "../../components/Burger/BuildControls/BuildControls"
 import Modal from "../../components/UI/Modal/Modal"
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary"
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler"
-import axios from "../../axios-order"
 import Spinner from "../../components/UI/Spinner/Spinner"
 import * as bugerBuilderActions from "../../store/action/index"
 
 class BurgerBuilder extends Component {
   state = {
     purchasing: false,
-    loading: false,
-    error: false,
   }
 
-  componentDidMount() {
-    // axios
-    //   .get("ingredients.json")
-    //   .then((res) => {
-    //     this.setState({
-    //       ingredients: res.data,
-    //     })
-    //   })
-    //   .catch((err) => {
-    //     // console.log(err);
-    //     this.setState({
-    //       error: true,
-    //     })
-    //   })
-  }
+  componentDidMount() {}
 
   updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
@@ -93,10 +77,6 @@ class BurgerBuilder extends Component {
           purchaseContinue={this.purchaseContinueHandler}
         />
       )
-    }
-
-    if (this.state.loading) {
-      orderSummary = <Spinner />
     }
 
     return (
