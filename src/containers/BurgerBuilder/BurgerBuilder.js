@@ -8,14 +8,16 @@ import Modal from "../../components/UI/Modal/Modal"
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary"
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler"
 import Spinner from "../../components/UI/Spinner/Spinner"
-import * as bugerBuilderActions from "../../store/action/index"
+import * as actions from "../../store/action/index"
 
 class BurgerBuilder extends Component {
   state = {
     purchasing: false,
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.onInitIngredient()
+  }
 
   updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
@@ -41,6 +43,7 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = () => {
+    this.props.onInitPurchase()
     this.props.history.push("/checkout")
   }
 
@@ -53,7 +56,7 @@ class BurgerBuilder extends Component {
     }
 
     let orderSummary = null
-    let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />
+    let burger = this.props.error ? <p>Ingredients can't be loaded</p> : <Spinner />
 
     if (this.props.ings) {
       burger = (
@@ -92,15 +95,18 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice,
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error,
   }
 }
 
 const mapDispatchToProps = (dispacth) => {
   return {
-    onIngredientAdded: (ingName) => dispacth(bugerBuilderActions.addIngredient(ingName)),
-    onIngredientRemoved: (ingName) => dispacth(bugerBuilderActions.removeIngredient(ingName)),
+    onIngredientAdded: (ingName) => dispacth(actions.addIngredient(ingName)),
+    onIngredientRemoved: (ingName) => dispacth(actions.removeIngredient(ingName)),
+    onInitIngredient: () => dispacth(actions.initIngredient()),
+    onInitPurchase: () => dispacth(actions.purchaseInit()),
   }
 }
 
