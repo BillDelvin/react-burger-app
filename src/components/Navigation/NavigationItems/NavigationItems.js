@@ -1,6 +1,6 @@
-import React from "react";
-import classes from "./NavigationItems.css";
-import NavigationItem from "./NavigationItem/NavigationItem";
+import React from "react"
+import classes from "./NavigationItems.css"
+import NavigationItem from "./NavigationItem/NavigationItem"
 
 const navigationItems = () => (
   <ul className={classes.NavigationItems}>
@@ -8,7 +8,8 @@ const navigationItems = () => (
       Burger Builder
     </NavigationItem>
     <NavigationItem link="/orders">Orders</NavigationItem>
+    <NavigationItem link="/auth">Authentication</NavigationItem>
   </ul>
-);
+)
 
-export default navigationItems;
+export default navigationItems
