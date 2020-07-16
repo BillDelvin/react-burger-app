@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Redirect } from "react-router-dom"
-import * as actionTypes from "../../store/action/index"
+import * as actions from "../../store/action/index"
 import Input from "../../components/UI/Input/Input"
 import Button from "../../components/UI/Button/Button"
 import Spinner from "../../components/UI/Spinner/Spinner"
@@ -42,6 +42,12 @@ class Auth extends Component {
       },
     },
     isSingup: true,
+  }
+
+  componentDidMount() {
+    if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
+      this.props.onSetRedirectPath()
+    }
   }
 
   checkValidity(value, rules) {
@@ -139,7 +145,7 @@ class Auth extends Component {
 
     let authRedirect = null
     if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to="/" />
+      authRedirect = <Redirect to={this.props.authRedirectPath} />
     }
     return (
       <div className={classes.Auth}>
@@ -162,12 +168,15 @@ const mapStateToProps = (state) => {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.token !== null,
+    buildingBurger: state.burgerBuilder.building,
+    authRedirectPath: state.auth.authRedirectPath,
   }
 }
 
 const mapDispatchToPorps = (dispatch) => {
   return {
-    onAuth: (email, password, isSingup) => dispatch(actionTypes.auth(email, password, isSingup)),
+    onAuth: (email, password, isSingup) => dispatch(actions.auth(email, password, isSingup)),
+    onSetRedirectPath: () => dispatch(actions.setAuthRedirectPath("/")),
   }
 }
 
