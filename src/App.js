@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { BrowserRouter as Router, Switch, Route, withRouter } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import { connect } from "react-redux"
 import * as actions from "./store/action/index"
 import Layout from "./hoc/Layout/Layout"
