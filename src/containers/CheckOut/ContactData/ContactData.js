@@ -1,24 +1,25 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
-import axios from "../../../axios-order"
-import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler"
-import * as actionTypes from "../../../store/action/index"
-import Spinner from "../../../components/UI/Spinner/Spinner"
-import Button from "../../../components/UI/Button/Button"
-import classes from "./ContactData.css"
-import Input from "../../../components/UI/Input/Input"
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import axios from '../../../axios-order'
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
+import * as actionTypes from '../../../store/action/index'
+import { updateObject, checkValidity } from '../../../shared/utility'
+import Spinner from '../../../components/UI/Spinner/Spinner'
+import Button from '../../../components/UI/Button/Button'
+import classes from './ContactData.css'
+import Input from '../../../components/UI/Input/Input'
 
 class ContactData extends Component {
   state = {
     orderForm: {
       name: {
         //key
-        elementType: "input", // harus sama dengan type text html
+        elementType: 'input', // harus sama dengan type text html
         elementConfig: {
-          type: "text",
-          placeholder: "Your Name",
+          type: 'text',
+          placeholder: 'Your Name',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
         },
@@ -26,12 +27,12 @@ class ContactData extends Component {
         touched: false,
       },
       street: {
-        elementType: "input", // harus sama dengan type text html
+        elementType: 'input', // harus sama dengan type text html
         elementConfig: {
-          type: "text",
-          placeholder: "Street",
+          type: 'text',
+          placeholder: 'Street',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
         },
@@ -39,12 +40,12 @@ class ContactData extends Component {
         touched: false,
       },
       zipcode: {
-        elementType: "input", // harus sama dengan type text html
+        elementType: 'input', // harus sama dengan type text html
         elementConfig: {
-          type: "text",
-          placeholder: "Zip code",
+          type: 'text',
+          placeholder: 'Zip code',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
           minLength: 5,
@@ -54,12 +55,12 @@ class ContactData extends Component {
         touched: false,
       },
       country: {
-        elementType: "input", // harus sama dengan type text html
+        elementType: 'input', // harus sama dengan type text html
         elementConfig: {
-          type: "text",
-          placeholder: "Country",
+          type: 'text',
+          placeholder: 'Country',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
         },
@@ -67,12 +68,12 @@ class ContactData extends Component {
         touched: false,
       },
       email: {
-        elementType: "input", // harus sama dengan type text html
+        elementType: 'input', // harus sama dengan type text html
         elementConfig: {
-          type: "email", //html default type
-          placeholder: "Your E-mail",
+          type: 'email', //html default type
+          placeholder: 'Your E-mail',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
         },
@@ -80,14 +81,14 @@ class ContactData extends Component {
         touched: false,
       },
       deliveryMethod: {
-        elementType: "select", // harus sama dengan type text html
+        elementType: 'select', // harus sama dengan type text html
         elementConfig: {
           options: [
-            { value: "Fastest", displayValue: "Fastest" },
-            { value: "Cheapest", displayValue: "Cheapest" },
+            { value: 'Fastest', displayValue: 'Fastest' },
+            { value: 'Cheapest', displayValue: 'Cheapest' },
           ],
         },
-        value: "fastest",
+        value: 'fastest',
         validation: {},
         valid: true,
       },
@@ -112,39 +113,21 @@ class ContactData extends Component {
     this.props.onOrderBurger(orderData, this.props.token)
   }
 
-  checkValidity(value, rules) {
-    let isValid = true
-
-    if (!rules) {
-      return true
-    }
-
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid
-    }
-
-    return isValid
-  }
-
   inputChangeHandler = (event, inputIdentifier) => {
-    const updateOrderForm = { ...this.state.orderForm }
-    const updateFormElement = { ...updateOrderForm[inputIdentifier] }
-    updateFormElement.value = event.target.value
-    updateFormElement.valid = this.checkValidity(
-      updateFormElement.value,
-      updateFormElement.validation
+    const updateFormElement = updateObject(
+      this.state.orderForm[inputIdentifier],
+      {
+        value: event.target.value,
+        valid: checkValidity(
+          event.target.value,
+          this.state.orderForm[inputIdentifier].validation
+        ),
+        touched: true,
+      }
     )
-    updateFormElement.touched = true
-    updateOrderForm[inputIdentifier] = updateFormElement
-
+    const updateOrderForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updateFormElement,
+    })
     let formIsValid = true
     for (let inputIdentifier in updateOrderForm) {
       formIsValid = updateOrderForm[inputIdentifier].valid && formIsValid
