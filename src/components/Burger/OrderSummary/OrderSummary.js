@@ -1,23 +1,19 @@
-import React, { Component } from "react";
-import Aux from "../../../hoc/Aux/Aux";
-import Button from "../../../components/UI/Button/Button";
+import React, { Component } from 'react'
+import Aux from '../../../hoc/Aux/Aux'
+import Button from '../../../components/UI/Button/Button'
 
 class OrderSummary extends Component {
-  componentDidUpdate() {
-    console.log("[OrderSummary] WillUpdate");
-  }
-
   render() {
     const ingredientSummary = Object.keys(this.props.ingredients).map(
-      igItem => {
+      (igItem) => {
         return (
           <li key={igItem}>
-            <span style={{ textTransform: "capitalize" }}>{igItem}</span>:
+            <span style={{ textTransform: 'capitalize' }}>{igItem}</span>:
             {this.props.ingredients[igItem]}
           </li>
-        );
+        )
       }
-    );
+    )
 
     return (
       <Aux>
@@ -35,8 +31,8 @@ class OrderSummary extends Component {
           CONTINUE
         </Button>
       </Aux>
-    );
+    )
   }
 }
 
-export default OrderSummary;
+export default OrderSummary
