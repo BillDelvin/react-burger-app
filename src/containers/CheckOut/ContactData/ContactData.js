@@ -99,12 +99,15 @@ class ContactData extends Component {
     event.preventDefault()
     const formData = {}
     for (let formElementIdentifier in this.state.orderForm) {
-      formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
+      formData[formElementIdentifier] = this.state.orderForm[
+        formElementIdentifier
+      ].value
     }
     const orderData = {
       ingredients: this.props.ings,
       price: this.props.price,
       order: formData,
+      userId: this.props.userId,
     }
     this.props.onOrderBurger(orderData, this.props.token)
   }
@@ -172,11 +175,12 @@ class ContactData extends Component {
               invalid={!formElement.config.valid}
               shouldValidate={formElement.config.validation}
               touched={formElement.config.touched}
-              changed={(event) => this.inputChangeHandler(event, formElement.id)}
+              changed={(event) =>
+                this.inputChangeHandler(event, formElement.id)
+              }
             />
           )
         })}
-        {/* <Input elementType="..." elementConfig="..." value="..." /> */}
         <Button btnType="Success" disabled={!this.state.formIsValid}>
           Order
         </Button>
@@ -195,13 +199,18 @@ const mapStateToProps = (state) => {
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
     token: state.auth.token,
+    userId: state.auth.userId,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrderBurger: (orderData, token) => dispatch(actionTypes.purchaseBurger(orderData, token)),
+    onOrderBurger: (orderData, token) =>
+      dispatch(actionTypes.purchaseBurger(orderData, token)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(ContactData, axios))
