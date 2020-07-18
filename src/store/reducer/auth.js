@@ -1,12 +1,12 @@
-import * as actionTypes from "../action/actionTypes"
-import { updateObject } from "../utility"
+import * as actionTypes from '../action/actionTypes'
+import { updateObject } from '../../shared/utility'
 
 const initialState = {
   token: null,
   userId: null,
   error: null,
   loading: null,
-  authRedirectPath: "/",
+  authRedirectPath: '/',
 }
 
 const authStart = (state, action) => {
