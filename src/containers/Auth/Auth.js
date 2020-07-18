@@ -1,23 +1,24 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
-import * as actions from "../../store/action/index"
-import Input from "../../components/UI/Input/Input"
-import Button from "../../components/UI/Button/Button"
-import Spinner from "../../components/UI/Spinner/Spinner"
-import classes from "./Auth.css"
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import * as actions from '../../store/action/index'
+import { updateObject, checkValidity } from '../../shared/utility'
+import Input from '../../components/UI/Input/Input'
+import Button from '../../components/UI/Button/Button'
+import Spinner from '../../components/UI/Spinner/Spinner'
+import classes from './Auth.css'
 
 class Auth extends Component {
   state = {
     controls: {
       email: {
         //key
-        elementType: "input", // harus sama dengan type text html
+        elementType: 'input', // harus sama dengan type text html
         elementConfig: {
-          type: "email",
-          placeholder: "your email",
+          type: 'email',
+          placeholder: 'your email',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
           isEmail: true,
@@ -27,12 +28,12 @@ class Auth extends Component {
       },
       password: {
         //key
-        elementType: "input", // harus sama dengan type text html
+        elementType: 'input', // harus sama dengan type text html
         elementConfig: {
-          type: "password",
-          placeholder: "your password",
+          type: 'password',
+          placeholder: 'your password',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
           minLength: 6,
@@ -45,51 +46,22 @@ class Auth extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
+    if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
       this.props.onSetRedirectPath()
     }
   }
 
-  checkValidity(value, rules) {
-    let isValid = true
-
-    if (!rules) {
-      return true
-    }
-
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid
-    }
-    if (rules.isEmail) {
-      const pattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-      isValid = pattern.test(value) && isValid
-    }
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/
-      isValid = pattern.test(value) && isValid
-    }
-
-    return isValid
-  }
-
   inputChangeHandler = (event, controlName) => {
-    const updatedControls = {
-      ...this.state.controls,
-      [controlName]: {
-        ...this.state.controls[controlName],
+    const updatedControls = updateObject(...this.state.controls, {
+      [controlName]: updateObject(this.state.controls[controlName], {
         value: event.target.value,
-        valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
+        valid: checkValidity(
+          event.target.value,
+          this.state.controls[controlName].validation
+        ),
         touched: true,
-      },
-    }
+      }),
+    })
     this.setState({
       controls: updatedControls,
     })
@@ -156,7 +128,7 @@ class Auth extends Component {
           <Button btnType="Success">Submit</Button>
         </form>
         <Button clicked={this.switchAuthModeHandler} btnType="Danger">
-          SWITCH TO {this.state.isSingup ? "SIGIN" : "SIGNUP"}
+          SWITCH TO {this.state.isSingup ? 'SIGIN' : 'SIGNUP'}
         </Button>
       </div>
     )
@@ -175,8 +147,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToPorps = (dispatch) => {
   return {
-    onAuth: (email, password, isSingup) => dispatch(actions.auth(email, password, isSingup)),
-    onSetRedirectPath: () => dispatch(actions.setAuthRedirectPath("/")),
+    onAuth: (email, password, isSingup) =>
+      dispatch(actions.auth(email, password, isSingup)),
+    onSetRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
   }
 }
 
