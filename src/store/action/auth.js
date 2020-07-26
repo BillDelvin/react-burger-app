@@ -1,15 +1,15 @@
-import * as actioTypes from './actionTypes'
+import * as actionTypes from './actionTypes'
 import axios from 'axios'
 
 export const authStart = () => {
   return {
-    type: actioTypes.AUTH_START,
+    type: actionTypes.AUTH_START,
   }
 }
 
 export const authSuccess = (token, userId) => {
   return {
-    type: actioTypes.AUTH_SUCCESS,
+    type: actionTypes.AUTH_SUCCESS,
     idToken: token,
     userId: userId,
   }
@@ -17,25 +17,30 @@ export const authSuccess = (token, userId) => {
 
 export const authFail = (error) => {
   return {
-    type: actioTypes.AUTH_FAIL,
+    type: actionTypes.AUTH_FAIL,
     error,
   }
 }
 
 export const logout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('expirationDate')
-  localStorage.removeItem('userId')
+  // localStorage.removeItem('token')
+  // localStorage.removeItem('expirationDate')
+  // localStorage.removeItem('userId')
   return {
-    type: actioTypes.AUTH_LOGOUT,
+    type: actionTypes.AUTH_INITIATE_LOGOUT,
+  }
+}
+
+export const logoutSucceed = () => {
+  return {
+    type: actionTypes.AUTH_LOGOUT,
   }
 }
 
 export const checkAuthTimeOut = (expirationTime) => {
-  return (dispatch) => {
-    setTimeout(() => {
-      dispatch(logout())
-    }, expirationTime * 1000)
+  return {
+    type: actionTypes.AUTH_CHECK_TIMEOUT,
+    expirationTime,
   }
 }
 
@@ -73,7 +78,7 @@ export const auth = (email, password, isSignup) => {
 
 export const setAuthRedirectPath = (path) => {
   return {
-    type: actioTypes.SET_AUTH_REDIRECT_PATH,
+    type: actionTypes.SET_AUTH_REDIRECT_PATH,
     path: path,
   }
 }
